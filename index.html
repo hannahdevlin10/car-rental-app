@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <!-- Custom styling -->
+        <link rel="stylesheet" href="style.css"> 
+        <!-- Font Awesome -->
+        <script src="https://kit.fontawesome.com/d70927c27e.js" crossorigin="anonymous"></script>
+        <title>Car Availability App</title>
+    </head>
+
+    <div class="navbar" id="navbar">
+        <h1 class="navbar-title">Car Availability App</h1>
+        <i class="fas fa-car-side"></i>
+    </div>
+
+    <body>
+        <div class="main-content">
+            <div class="main-content-sort-data">
+                <div class="sort-dropdown">
+                    <label for="cars">Sort by:</label>
+                        <select name="cars" id="cars">
+                            <option value="asc">ASC</option>
+                            <option value="desc">DESC</option>
+                        </select>
+                    <br><br>
+                </div>
+                <div class="sort-btn-submit">
+                    <input type="submit" value="Set Order">
+                </div>
+            </div>
+            <div>
+                <!-- <div class="car-list-head" id="carListHead"></div> -->
+                <div class="car-list-items" id="carListItems">
+
+                </div>
+            </div>
+            
+        </div>
+       
+    </body>
+
+    <!-- <footer>
+        Hannah Devlin 2022 &copy;
+    </footer> -->
+    
+</html>
+
+<script type="text/javascript">
+    const api = 'http://www.cartrawler.com/ctabe/cars.json';
+
+    fetch(api)
+        .then(response => response.json())
+        .then(json => appendData(json[0].VehAvailRSCore.VehVendorAvails))
+        .catch(err => console.log('Request failed: ', err));
+
+    const appendData = (data) => {
+        // Set list of cars
+        let availableCars = [];
+
+        for (var i = 0; i < data.length; i++) {
+            let newData = Object.entries(data[i]);
+            let currentVendor = newData[0][1]['@Name'];
+            for (var x = 0; x < newData.length; x++) {
+                let carList = newData[1][1];
+                for (var y = 0; y < carList.length; y++) {
+                   availableCars.push({ vendor: currentVendor, carMakeModel: carList[y].Vehicle });
+                }
+            }
+        }
+        
+        let mainCarList = document.getElementById('carListItems');
+        availableCars?.forEach((car) => {
+            let div = document.createElement('div');
+            div.className = "car-list-item";
+            div.innerHTML = `Vendor: ${car?.vendor} | Make: ${car?.carMakeModel?.VehMakeModel['@Name']}`;
+
+            mainCarList.appendChild(div);
+        })
+       
+        // Set car vendors
+        // let vendors = [];
+
+        // for (var a = 0; a < data.length; a++) {
+        //     vendors.push(data[a].Vendor['@Name'])
+        //     let unq = [...new Set(vendors)]
+        // }
+       
+        // let main = document.getElementById("carListHead");
+        // vendors.forEach((ven) => {
+        //     let div = document.createElement("div");
+        //     div.className = "car-list-item";
+        //     div.innerHTML = ven;
+
+        //     main.appendChild(div);
+        // })
+    }
+</script>

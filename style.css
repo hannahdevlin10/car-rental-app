@@ -1,0 +1,63 @@
+@import url('https://fonts.googleapis.com/css2?family=Karla&family=Oswald&display=swap');
+
+* {
+    font-family: 'Karla', sans-serif;
+}
+
+body {
+    background-color: #e6e6e6;
+}
+
+.navbar {
+    top: 0px;
+    left: 0px;
+    position: absolute;
+    background-color: #282c34;
+    width: 100%;
+    height: 85px;
+    display: flex;
+    justify-content: space-between;
+}
+
+.navbar-title {
+    margin-top: 22px;
+    margin-left: 85px;
+    color: white;
+}
+
+.fa-car-side {
+    margin-top: 25px;
+    margin-right: 85px;
+    font-size: 32px;
+    color: white;
+}
+
+.main-content {
+    margin-top: 120px;
+}
+
+.main-content-sort-data {
+    width: 100%;
+    padding: 5px 76px;
+    display: flex;
+}
+
+.sort-dropdown, .sort-btn-submit{
+    margin: 0px 10px 0px 0px;
+    font-size: 20px;
+}
+
+select, input {
+    font-size: 20px;
+    padding: 5px;
+}
+
+.car-list-head { 
+    display: flex;
+    justify-content: space-around;
+}
+
+.car-list-item {
+    padding: 20px;
+    font-size: 28px;
+}
