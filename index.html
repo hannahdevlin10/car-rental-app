@@ -10,10 +10,10 @@
     </head>
 
     <div class="navbar" id="navbar">
-        <h1 class="navbar-title">Car Availability App</h1>
+        <h1 class="navbar-title">Car Rental</h1>
         <i class="fas fa-car-side"></i>
     </div>
-
+    
     <body>
         <div class="main-content">
             <div class="main-content-sort-data">
@@ -26,23 +26,24 @@
                     <br><br>
                 </div>
                 <div class="sort-btn-submit">
-                    <input type="submit" value="Set Order">
+                    <input type="submit" class="sort-btn" value="Set Order">
                 </div>
             </div>
-            <div>
-                <!-- <div class="car-list-head" id="carListHead"></div> -->
-                <div class="car-list-items" id="carListItems">
-
-                </div>
+            
+            <div class="car-list-container">
+                <car-list-element></car-list-element>
+                <div class="car-list-items" id="carListItems"></div>
             </div>
+                
             
         </div>
        
     </body>
 
-    <!-- <footer>
+    <br>
+    <footer>
         Hannah Devlin 2022 &copy;
-    </footer> -->
+    </footer>
     
 </html>
 
@@ -54,6 +55,23 @@
         .then(json => appendData(json[0].VehAvailRSCore.VehVendorAvails))
         .catch(err => console.log('Request failed: ', err));
 
+
+    const getVendorIcon = (vendor) => {
+        switch (vendor) {
+            case 'ALAMO':
+                return "./assets/imgs/alamo.svg"
+                break;
+            case 'AVIS':
+                return "./assets/imgs/avis.svg"
+                break;
+            case 'HERTZ':
+                return "./assets/imgs/hertz.svg"
+                break;
+            default:
+                break;
+        }
+    }
+
     const appendData = (data) => {
         // Set list of cars
         let availableCars = [];
@@ -64,16 +82,53 @@
             for (var x = 0; x < newData.length; x++) {
                 let carList = newData[1][1];
                 for (var y = 0; y < carList.length; y++) {
-                   availableCars.push({ vendor: currentVendor, carMakeModel: carList[y].Vehicle });
+                   availableCars.push({
+                       vendor: currentVendor,
+                       carMakeModel: carList[y].Vehicle,
+                       icon: getVendorIcon(currentVendor)
+                    });
                 }
             }
         }
-        
+
         let mainCarList = document.getElementById('carListItems');
         availableCars?.forEach((car) => {
             let div = document.createElement('div');
             div.className = "car-list-item";
-            div.innerHTML = `Vendor: ${car?.vendor} | Make: ${car?.carMakeModel?.VehMakeModel['@Name']}`;
+            div.id = "carListItem";
+            div.innerHTML =
+                `
+                    <div class="car-list-item-header">
+                        ${car?.carMakeModel?.VehMakeModel['@Name']}
+                        <img src=${car?.icon} class="car-list-item-vendor-icon" />
+                    </div>
+                    <div class="car-list-item-content-container">
+                        <div class="car-list-item-content" style="width: 65%">
+                            <div>
+                                <table>
+                                    <tr>
+                                        <td class="car-info-prop">Transmission: </td>
+                                        <td class="car-info-value">${car?.carMakeModel['@TransmissionType']}</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="car-info-prop">Fuel: </td>
+                                        <td class="car-info-value">${car?.carMakeModel['@FuelType']}</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="car-info-prop">Passengers: </td>
+                                        <td class="car-info-value">${car?.carMakeModel['@PassengerQuantity']}</td>
+                                    </tr>
+                                </table>
+                            </div>
+                        </div>
+                        <div class="car-list-item-img-container">
+                            <img src=${car?.carMakeModel?.PictureURL} alt="car-img" class="car-list-item-img" />
+                        </div>
+                    </div>
+                    <div>
+                        <button class="car-list-item-view-btn">View</button>
+                    </div>
+                `;
 
             mainCarList.appendChild(div);
         })

@@ -1,7 +1,7 @@
-@import url('https://fonts.googleapis.com/css2?family=Karla&family=Oswald&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Open+Sans&display=swap');
 
 * {
-    font-family: 'Karla', sans-serif;
+    font-family: 'Open Sans', sans-serif;
 }
 
 body {
@@ -16,18 +16,18 @@ body {
     width: 100%;
     height: 85px;
     display: flex;
-    justify-content: space-between;
+    justify-content: center;
 }
 
 .navbar-title {
     margin-top: 22px;
-    margin-left: 85px;
+    /* margin-left: 20%; */
     color: white;
 }
 
 .fa-car-side {
-    margin-top: 25px;
-    margin-right: 85px;
+    margin-top: 29px;
+    margin-left: 15px;
     font-size: 32px;
     color: white;
 }
@@ -37,27 +37,94 @@ body {
 }
 
 .main-content-sort-data {
-    width: 100%;
-    padding: 5px 76px;
     display: flex;
+    justify-content: right;
+    margin-right: 14.5%;
 }
 
-.sort-dropdown, .sort-btn-submit{
+.sort-dropdown, .sort-btn-submit {
     margin: 0px 10px 0px 0px;
     font-size: 20px;
 }
 
 select, input {
-    font-size: 20px;
-    padding: 5px;
+    font-size: 16px;
+    padding: 6px;
+    cursor: pointer;
+    border-radius: 5px;
 }
 
-.car-list-head { 
+input[class="sort-btn"] {
+    background-color: #E6356F;
+    border: 2px solid #E6356F;
+    color: white;
+}
+
+.car-list-item-header {
+    font-size: 28px;
+    font-weight: 700px;
     display: flex;
-    justify-content: space-around;
+    justify-content: space-between;
+    width: 100%;
+    margin-bottom: 25px;
+}
+
+.car-list-container {
+    margin-left: 15%;
+    margin-right: 15%;
+    background: #ffffff;
+    border-radius: 5px;
+    padding: 50px;
+}
+
+.car-list-items {
+    /* display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 50px; */
+    display: flex;
+    flex-direction: column;
+}
+
+.car-list-item-content-container {
+    display: flex;
+    flex-direction: row;
+}
+
+.car-list-item-content {
+    font-size: 20px;
+}
+
+.car-list-item-vendor-icon {
+    width: 100px;
+    margin-top: 5px;
+    margin-left: 10px;
 }
 
 .car-list-item {
-    padding: 20px;
+    padding: 20px 35px;
+    margin-bottom: 30px;
     font-size: 28px;
+    border: 1px solid #EFEFEF;
+}
+
+.car-list-item-img-container {
+    width: 35%;
+    text-align: right;
+    padding-top: 8px;
+}
+
+.car-list-item-img {
+    width: 265px;
+}
+
+th, td {
+    padding: 5px 25px;
+}
+
+.car-info-prop {
+    color: #8c8c8c
+}
+
+.car-info-value {
+    font-weight: 700;
 }
