@@ -6,6 +6,14 @@
         <link rel="stylesheet" href="style.css"> 
         <!-- Font Awesome -->
         <script src="https://kit.fontawesome.com/d70927c27e.js" crossorigin="anonymous"></script>
+        
+        <!-- For Modal Only -->
+        <!-- jQuery library -->
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+        <!-- Latest compiled JavaScript -->
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+        
         <title>Car Availability App</title>
     </head>
 
@@ -29,22 +37,12 @@
                     <input type="submit" class="sort-btn" value="Set Order">
                 </div>
             </div>
-            
             <div class="car-list-container">
-                <car-list-element></car-list-element>
                 <div class="car-list-items" id="carListItems"></div>
             </div>
-                
-            
         </div>
-       
     </body>
-
     <br>
-    <footer>
-        Hannah Devlin 2022 &copy;
-    </footer>
-    
 </html>
 
 <script type="text/javascript">
@@ -54,7 +52,6 @@
         .then(response => response.json())
         .then(json => appendData(json[0].VehAvailRSCore.VehVendorAvails))
         .catch(err => console.log('Request failed: ', err));
-
 
     const getVendorIcon = (vendor) => {
         switch (vendor) {
@@ -72,6 +69,19 @@
         }
     }
 
+    const getStatusIcon = (status) => {
+       if (status === 'Available' || status === 'true') {
+           return "fas fa-check-circle"
+       } else {
+           return "fas fa-times-circle"
+       }
+    }
+
+    function viewCar(id) {
+        let x = document.getElementById(id);
+        x.classList.toggle("show");
+    }
+
     const appendData = (data) => {
         // Set list of cars
         let availableCars = [];
@@ -79,12 +89,20 @@
         for (var i = 0; i < data.length; i++) {
             let newData = Object.entries(data[i]);
             let currentVendor = newData[0][1]['@Name'];
+            let currentVendorCode = newData[0][1]['@Code']
             for (var x = 0; x < newData.length; x++) {
                 let carList = newData[1][1];
                 for (var y = 0; y < carList.length; y++) {
-                   availableCars.push({
+                    let rateTotal = Math.round(carList[y].TotalCharge['@RateTotalAmount']);
+                    let isAvailable = carList[y]['@Status'];
+                    let hasAirCon = carList[y].Vehicle['@AirConditionInd'];
+                    availableCars.push({
+                       id: currentVendorCode + carList[y].Vehicle.VehMakeModel['@Name'].replace('or similar','').replace(' ', ''),
                        vendor: currentVendor,
                        carMakeModel: carList[y].Vehicle,
+                       total: rateTotal,
+                       status: getStatusIcon(isAvailable),
+                       airCon: getStatusIcon(hasAirCon),
                        icon: getVendorIcon(currentVendor)
                     });
                 }
@@ -92,62 +110,91 @@
         }
 
         let mainCarList = document.getElementById('carListItems');
-        availableCars?.forEach((car) => {
+        let key = 'id';
+        const arrayUniqueByKey = [...new Map(availableCars.map(item => [item[key], item])).values()];
+       
+        arrayUniqueByKey?.forEach((car) => {
             let div = document.createElement('div');
             div.className = "car-list-item";
             div.id = "carListItem";
             div.innerHTML =
-                `
+            `
+                <div>
                     <div class="car-list-item-header">
-                        ${car?.carMakeModel?.VehMakeModel['@Name']}
-                        <img src=${car?.icon} class="car-list-item-vendor-icon" />
-                    </div>
-                    <div class="car-list-item-content-container">
-                        <div class="car-list-item-content" style="width: 65%">
-                            <div>
-                                <table>
-                                    <tr>
-                                        <td class="car-info-prop">Transmission: </td>
-                                        <td class="car-info-value">${car?.carMakeModel['@TransmissionType']}</td>
-                                    </tr>
-                                    <tr>
-                                        <td class="car-info-prop">Fuel: </td>
-                                        <td class="car-info-value">${car?.carMakeModel['@FuelType']}</td>
-                                    </tr>
-                                    <tr>
-                                        <td class="car-info-prop">Passengers: </td>
-                                        <td class="car-info-value">${car?.carMakeModel['@PassengerQuantity']}</td>
-                                    </tr>
-                                </table>
-                            </div>
+                        <div>
+                            ${car?.carMakeModel?.VehMakeModel['@Name'].replace('or similar','')}
                         </div>
-                        <div class="car-list-item-img-container">
-                            <img src=${car?.carMakeModel?.PictureURL} alt="car-img" class="car-list-item-img" />
+                        <div>
+                            <img src=${car?.icon} class="car-list-item-vendor-icon" />
                         </div>
                     </div>
+                    <div class="car-list-item-subtext">or similar</div>
+                    <div class="car-list-item-img-container">
+                        <img src=${car?.carMakeModel?.PictureURL} alt="car-img" class="car-list-item-img" />
+                    </div>
+                    <div class="car-list-item-content">
+                        <table>
+                            <tr>
+                                <td class="car-info-prop">Transmission: </td>
+                                <td class="car-info-value">${car?.carMakeModel['@TransmissionType']}</td>
+                            </tr>
+                            <tr>
+                                <td class="car-info-prop">Fuel: </td>
+                                <td class="car-info-value">${car?.carMakeModel['@FuelType']}</td>
+                            </tr>
+                            <tr>
+                                <td class="car-info-prop">Passengers: </td>
+                                <td class="car-info-value">${car?.carMakeModel['@PassengerQuantity']}</td>
+                            </tr>
+                        </table>
+                        <div style="text-align: center">
+                           <p>CAN$ ${car.total}</p>
+                        </div>
+                    </div>
+                    <div style="width: 225px; margin: auto !important;">
+                        <button class="car-list-item-view-btn" onclick="viewCar('${car.id}');">
+                            Toggle Details
+                        </button>
+                    </div>
+                </div>
+                <div id="${car.id}" class="show-hide-div">
                     <div>
-                        <button class="car-list-item-view-btn">View</button>
+                        <table>
+                            <tr>
+                                <td class="car-info-prop">Transmission: </td>
+                                <td class="car-info-value">${car?.carMakeModel['@TransmissionType']}</td>
+                            </tr>
+                            <tr>
+                                <td class="car-info-prop">Fuel: </td>
+                                <td class="car-info-value">${car?.carMakeModel['@FuelType']}</td>
+                            </tr>
+                            <tr>
+                                <td class="car-info-prop">Passengers: </td>
+                                <td class="car-info-value">${car?.carMakeModel['@PassengerQuantity']}</td>
+                            </tr>
+                            <tr>
+                                <td class="car-info-prop">Air Conditioning: </td>
+                                <td class="car-info-value"><i class="${car.airCon}"></i></td>
+                            </tr>
+                            <tr>
+                                <td class="car-info-prop">Baggage Quantity: </td>
+                                <td class="car-info-value">${car?.carMakeModel['@BaggageQuantity']}</td>
+                            </tr>
+                            <tr>
+                                <td class="car-info-prop">Doors: </td>
+                                <td class="car-info-value">${car?.carMakeModel['@DoorCount']}</td>
+                            </tr>
+                            <tr>
+                                <td class="car-info-prop">Available: </td>
+                                <td class="car-info-value"><i class="${car.status}"></i></td>
+                            </tr>
+                        </table>
                     </div>
-                `;
+                </div>
+            `;
 
             mainCarList.appendChild(div);
+            
         })
-       
-        // Set car vendors
-        // let vendors = [];
-
-        // for (var a = 0; a < data.length; a++) {
-        //     vendors.push(data[a].Vendor['@Name'])
-        //     let unq = [...new Set(vendors)]
-        // }
-       
-        // let main = document.getElementById("carListHead");
-        // vendors.forEach((ven) => {
-        //     let div = document.createElement("div");
-        //     div.className = "car-list-item";
-        //     div.innerHTML = ven;
-
-        //     main.appendChild(div);
-        // })
     }
 </script>
