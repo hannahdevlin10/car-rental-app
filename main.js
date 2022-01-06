@@ -1,3 +1,4 @@
+// requires https for deployment to hosting service
 const api = 'http://www.cartrawler.com/ctabe/cars.json';
     // fetch json data
     fetch(api)
