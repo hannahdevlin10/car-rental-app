@@ -14,6 +14,7 @@ body {
     position: absolute;
     background-color: #282c34;
     width: 100%;
+    min-width: 1263px;
     height: 85px;
     display: flex;
     justify-content: center;
@@ -37,26 +38,44 @@ body {
 
 .main-content-sort-data {
     display: flex;
-    justify-content: right;
-    margin-right: 11.5%;
+    justify-content: space-between;
+    margin-right: 12%;
+    margin-left: 12%;
     height: 56px;
 }
 
-.sort-dropdown, .sort-btn-submit {
-    margin: 0px 10px 0px 0px;
-    font-size: 20px;
+.main-content-toolbar {
+    background-color: white;
+    border-radius: 5px;
+    padding: 4px;
 }
 
-select, input {
+.pickup-table, .return-table {
+    padding: 0px 16px;
+}
+
+.sort-btn-submit {
+    font-size: 20px;
+    margin-top: auto;
+    margin-bottom: auto;
+}
+
+input {
     font-size: 16px;
     padding: 6px;
     cursor: pointer;
 }
 
-input[class="sort-btn"] {
+.sort-btn {
     background-color: #E6356F;
     border: 2px solid #E6356F;
     color: white;
+    border-radius: 5px;
+}
+
+.sort-btn:hover {
+    background-color: white;
+    color: #E6356F;
 }
 
 .car-list-item-header {
@@ -70,20 +89,19 @@ input[class="sort-btn"] {
 .car-list-container {
     margin-left: 12%;
     margin-right: 12%;
+    margin-top: 22px;
     background: #ffffff;
+    min-width: 900px;
     border-radius: 5px;
-    padding: 50px;
+    padding: 20px;
+    justify-content: center;
 }
 
 .car-list-items {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
-    gap: 22px;
-}
-
-.car-list-item-content-container {
-    display: flex;
-    flex-direction: row;
+    gap: 20px;
+    overflow-y: unset;
 }
 
 .car-list-item-content {
@@ -104,6 +122,8 @@ input[class="sort-btn"] {
     border: 1px solid #EFEFEF;
     z-index: 0;
     position: relative;
+    width: 88%;
+    margin: auto;
 }
 
 .car-list-item-img-container {
@@ -116,21 +136,19 @@ input[class="sort-btn"] {
     width: 240px;
 }
 
-table {
+.car-list-item-table {
     width: 250px;
     margin: auto;
     margin-bottom: 6px;
 }
 
-th, td {
-    padding: 2px 12px;
-}
-
 .car-info-prop {
+    padding: 2px 12px;
     color: #8c8c8c
 }
 
 .car-info-value {
+    padding: 2px 12px;
     font-weight: 700;
 }
 
@@ -170,11 +188,16 @@ th, td {
 .show-hide-div.show {
     display: block;
     z-index: 999;
-    margin-top: -105%;
+    top: 78px;
+    left: 0; 
+    right: 0; 
+    margin-left: auto; 
+    margin-right: auto; 
+    border: 1px solid #E6356F;
     background-color: white;
     padding: 16px;
-    width: 248px;
-    height: 254px;
+    width: 250px;
+    height: 250px;
     position: absolute;
     border-radius: 5px;
     font-size: 16px;

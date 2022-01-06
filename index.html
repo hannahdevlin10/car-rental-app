@@ -20,6 +20,9 @@
     <body>
         <div class="main-content">
             <div class="main-content-sort-data">
+                <div class="main-content-toolbar" id="mainContentToolbar">
+                    
+                </div>
                 <div class="sort-btn-submit">
                     <input type="submit" class="sort-btn" onclick="sortListCars()" value="Sort by Price">
                 </div>
@@ -37,7 +40,7 @@
 
     fetch(api)
         .then(response => response.json())
-        .then(json => appendData(json[0].VehAvailRSCore.VehVendorAvails))
+        .then(json => appendData(json[0].VehAvailRSCore))
         .catch(err => console.log('Request failed: ', err));
 
     const getVendorIcon = (vendor) => {
@@ -70,23 +73,27 @@
     }
 
     function sortListCars() {
-        var list, switching, b, dir, shouldSwitch, switchcount = 0;
-        list = document.getElementById('carListItems');
+        var carList, switching, b, dir, shouldSwitch, switchcount = 0;
+        carList = document.getElementById('carListItems');
         switching = true;
         dir = "asc";
 
         while (switching) {
             switching = false;
-            b = list.getElementsByClassName("car-list-item");
+            b = carList.getElementsByClassName("car-list-item");
             for (i = 0; i < (b.length - 1); i++) {
             shouldSwitch = false;
+
+            let valueA = b[i].children.item(0).getElementsByClassName("car-list-item-price")[0].innerHTML.replace('$CAN ','');
+            let valueB = b[i + 1].children.item(0).getElementsByClassName("car-list-item-price")[0].innerHTML.replace('$CAN ','');
+
             if (dir == "asc") {
-                if (Number(b[i].children.item(0).getElementsByClassName("car-list-item-price")[0].innerHTML) > Number(b[i + 1].children.item(0).getElementsByClassName("car-list-item-price")[0].innerHTML)) {
+                if (Number(valueA) > Number(valueB)) {
                 shouldSwitch = true;
                 break;
                 }
             } else if (dir == "desc") {
-                if (Number(b[i].children.item(0).getElementsByClassName("car-list-item-price")[0].innerHTML) < Number(b[i + 1].children.item(0).getElementsByClassName("car-list-item-price")[0].innerHTML)) {
+                if (Number(valueA) < Number(valueB)) {
                 shouldSwitch= true;
                 break;
                 }
@@ -108,8 +115,51 @@
     const appendData = (data) => {
         let availableCars = [];
 
-        for (var i = 0; i < data.length; i++) {
-            let newData = Object.entries(data[i]);
+        let carData = data.VehVendorAvails;
+
+        // Rental Date & Time
+        let timeLocInfo = data.VehRentalCore;
+
+        let convertPickUpDate = new Date(timeLocInfo['@PickUpDateTime']);
+        let pickUpDate = String(convertPickUpDate).slice(0,15);
+        let pickUpTime = String(convertPickUpDate).slice(16, 28);
+
+        let convertReturnDate = new Date(timeLocInfo['@ReturnDateTime']);
+        let returnDate = String(convertReturnDate).slice(0,15);
+        let returnTime = String(convertReturnDate).slice(16, 28);
+
+        let toolbar = document.getElementById("mainContentToolbar");
+        let timeLocInfoDiv = document.createElement('div');
+        timeLocInfoDiv.className = "time-loc-info";
+        timeLocInfoDiv.id = ("timeLocInfoDiv");
+        timeLocInfoDiv.innerHTML =
+        `
+            <div style="display: flex; justify-content: space-between;">
+                <div class="pickup-table">
+                    <div>
+                        <b>Pick Up</b>
+                    </div>
+                    <div>
+                        <span>${pickUpDate} |</span>
+                        <span> ${pickUpTime}</span>
+                    </div>
+                </div>
+                <div class="return-table">
+                    <div>
+                        <b>Return</b>
+                    </div>
+                    <div>
+                        <span>${returnDate} |</span>
+                        <span> ${returnTime}</span>
+                    </div>
+                </div>
+            </div>
+        `
+        
+        toolbar.appendChild(timeLocInfoDiv)
+
+        for (var i = 0; i < carData.length; i++) {
+            let newData = Object.entries(carData[i]);
             let currentVendor = newData[0][1]['@Name'];
             let currentVendorCode = newData[0][1]['@Code']
             for (var x = 0; x < newData.length; x++) {
@@ -140,7 +190,6 @@
             div.className = "car-list-item";
             div.id = "carListItem";
 
-
             div.innerHTML =
             `
                 <div>
@@ -157,7 +206,7 @@
                         <img src=${car?.carMakeModel?.PictureURL} alt="car-img" class="car-list-item-img" />
                     </div>
                     <div class="car-list-item-content">
-                        <table>
+                        <table class="car-list-item-table">
                             <tr>
                                 <td class="car-info-prop">Transmission: </td>
                                 <td class="car-info-value">${car?.carMakeModel['@TransmissionType']}</td>
@@ -171,15 +220,12 @@
                                 <td class="car-info-value">${car?.carMakeModel['@PassengerQuantity']}</td>
                             </tr>
                         </table>
-                        <div class="car-list-item-price" style="text-align: center">${car.total}</div>
+                        <div class="car-list-item-price" style="text-align: center">
+                           $CAN ${car.total}
+                        </div>
                     </div>
                     <div style="width: 225px; margin: auto !important;">
-                        <button class="car-list-item-view-btn" onclick="viewCar('${car.id}');">
-                            Toggle Details
-                        </button>
-                    </div>
-                </div>
-                <div id="${car.id}" class="show-hide-div">
+                        <div id="${car.id}" class="show-hide-div">
                     <div>
                         <table>
                             <tr>
@@ -213,6 +259,12 @@
                         </table>
                     </div>
                 </div>
+                        <button class="car-list-item-view-btn" onclick="viewCar('${car.id}');">
+                            Details
+                        </button>
+                    </div>
+                </div>
+                
             `;
 
             mainCarList.appendChild(div);
