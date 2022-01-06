@@ -6,15 +6,10 @@
         <link rel="stylesheet" href="style.css"> 
         <!-- Font Awesome -->
         <script src="https://kit.fontawesome.com/d70927c27e.js" crossorigin="anonymous"></script>
-        
-        <!-- For Modal Only -->
         <!-- jQuery library -->
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-
-        <!-- Latest compiled JavaScript -->
-        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
         
-        <title>Car Availability App</title>
+        <title>Car Rental App</title>
     </head>
 
     <div class="navbar" id="navbar">
@@ -25,16 +20,8 @@
     <body>
         <div class="main-content">
             <div class="main-content-sort-data">
-                <div class="sort-dropdown">
-                    <label for="cars">Sort by:</label>
-                        <select name="cars" id="cars">
-                            <option value="asc">ASC</option>
-                            <option value="desc">DESC</option>
-                        </select>
-                    <br><br>
-                </div>
                 <div class="sort-btn-submit">
-                    <input type="submit" class="sort-btn" value="Set Order">
+                    <input type="submit" class="sort-btn" onclick="sortListCars()" value="Sort by Price">
                 </div>
             </div>
             <div class="car-list-container">
@@ -82,8 +69,43 @@
         x.classList.toggle("show");
     }
 
+    function sortListCars() {
+        var list, switching, b, dir, shouldSwitch, switchcount = 0;
+        list = document.getElementById('carListItems');
+        switching = true;
+        dir = "asc";
+
+        while (switching) {
+            switching = false;
+            b = list.getElementsByClassName("car-list-item");
+            for (i = 0; i < (b.length - 1); i++) {
+            shouldSwitch = false;
+            if (dir == "asc") {
+                if (Number(b[i].children.item(0).getElementsByClassName("car-list-item-price")[0].innerHTML) > Number(b[i + 1].children.item(0).getElementsByClassName("car-list-item-price")[0].innerHTML)) {
+                shouldSwitch = true;
+                break;
+                }
+            } else if (dir == "desc") {
+                if (Number(b[i].children.item(0).getElementsByClassName("car-list-item-price")[0].innerHTML) < Number(b[i + 1].children.item(0).getElementsByClassName("car-list-item-price")[0].innerHTML)) {
+                shouldSwitch= true;
+                break;
+                }
+            }
+            }
+            if (shouldSwitch) {
+            b[i].parentNode.insertBefore(b[i + 1], b[i]);
+            switching = true;
+            switchcount ++;
+            } else {
+            if (switchcount == 0 && dir == "asc") {
+                dir = "desc";
+                switching = true;
+            }
+            }
+        }
+    }
+
     const appendData = (data) => {
-        // Set list of cars
         let availableCars = [];
 
         for (var i = 0; i < data.length; i++) {
@@ -112,11 +134,13 @@
         let mainCarList = document.getElementById('carListItems');
         let key = 'id';
         const arrayUniqueByKey = [...new Map(availableCars.map(item => [item[key], item])).values()];
-       
+
         arrayUniqueByKey?.forEach((car) => {
             let div = document.createElement('div');
             div.className = "car-list-item";
             div.id = "carListItem";
+
+
             div.innerHTML =
             `
                 <div>
@@ -147,9 +171,7 @@
                                 <td class="car-info-value">${car?.carMakeModel['@PassengerQuantity']}</td>
                             </tr>
                         </table>
-                        <div style="text-align: center">
-                           <p>CAN$ ${car.total}</p>
-                        </div>
+                        <div class="car-list-item-price" style="text-align: center">${car.total}</div>
                     </div>
                     <div style="width: 225px; margin: auto !important;">
                         <button class="car-list-item-view-btn" onclick="viewCar('${car.id}');">
@@ -194,7 +216,6 @@
             `;
 
             mainCarList.appendChild(div);
-            
         })
     }
 </script>

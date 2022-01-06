@@ -21,7 +21,6 @@ body {
 
 .navbar-title {
     margin-top: 22px;
-    /* margin-left: 20%; */
     color: white;
 }
 
@@ -33,17 +32,18 @@ body {
 }
 
 .main-content {
-    margin-top: 120px;
+    margin-top: 105px;
 }
 
 .main-content-sort-data {
     display: flex;
     justify-content: right;
     margin-right: 11.5%;
+    height: 56px;
 }
 
 .sort-dropdown, .sort-btn-submit {
-    margin: 0px 10px 2px 0px;
+    margin: 0px 10px 0px 0px;
     font-size: 20px;
 }
 
@@ -79,8 +79,6 @@ input[class="sort-btn"] {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
     gap: 22px;
-    /* display: flex;
-    flex-direction: column; */
 }
 
 .car-list-item-content-container {
