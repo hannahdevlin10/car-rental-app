@@ -1,204 +1,171 @@
-@import url('https://fonts.googleapis.com/css2?family=Open+Sans&display=swap');
-
+@import url("https://fonts.googleapis.com/css2?family=Open+Sans&display=swap");
 * {
-    font-family: 'Open Sans', sans-serif;
+  font-family: "Open Sans", sans-serif;
 }
 
 body {
-    background-color: #e6e6e6;
+  background-color: #e6e6e6;
+}
+body .main-content {
+  margin-top: 105px;
+}
+body .container {
+  display: flex;
+  justify-content: space-between;
+  margin-right: 12%;
+  margin-left: 12%;
+}
+body .rental-date-time {
+  background-color: #ffffff;
+  border-radius: 5px;
+  padding: 4px;
+}
+body .rental-date-time .legend {
+  color: #999999;
+  padding: 0px 16px 4px 16px;
+  margin-top: auto;
+  margin-bottom: auto;
+}
+body .pickup-table, body .return-table {
+  padding: 0px 16px;
+}
+body .sort-btn {
+  font-size: 16px;
+  padding: 6px;
+  cursor: pointer;
+  margin-top: auto;
+  margin-bottom: auto;
+  background-color: #E6356F;
+  border: 2px solid #E6356F;
+  color: #ffffff;
+  border-radius: 5px;
+}
+body .sort-btn:hover {
+  background-color: #ffffff;
+  color: #E6356F;
+}
+body .car-list-item-header {
+  font-size: 20px;
+  font-weight: 800;
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+}
+body .car-list-container {
+  margin-left: 12%;
+  margin-right: 12%;
+  margin-top: 22px;
+  background: #ffffff;
+  min-width: 900px;
+  border-radius: 5px;
+  padding: 20px;
+  justify-content: center;
+}
+body .car-list-items {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 20px;
+  overflow-y: unset;
+}
+body .car-list-item-content {
+  font-size: 16px;
+  padding-left: 5%;
+  padding-right: 5%;
+}
+body .car-list-item-vendor-icon {
+  width: 70px;
+  margin-top: 5px;
+  margin-left: 12px;
+}
+body .car-list-item {
+  padding: 22px 16px;
+  font-size: 28px;
+  border: 1px solid #EFEFEF;
+  z-index: 0;
+  position: relative;
+  width: 88%;
+  margin: auto;
+}
+body .car-list-item-img-container {
+  width: 100%;
+  text-align: center;
+  padding-top: 8px;
+}
+body .car-list-item-img {
+  width: 240px;
+}
+body .car-list-item-table {
+  width: 250px;
+  margin: auto;
+  margin-bottom: 6px;
+}
+body .car-info-prop {
+  padding: 2px 12px;
+  color: #8c8c8c;
+}
+body .car-info-value {
+  padding: 2px 12px;
+  font-weight: 700;
+}
+body .car-list-item-subtext {
+  color: #999999;
+  font-size: 14px;
+  margin-bottom: 25px;
+  margin-top: -2px;
+}
+body .car-list-item-view-btn {
+  width: 100%;
+  color: #E6356F;
+  background-color: #ffffff;
+  border: 1px solid #E6356F;
+  padding: 6px;
+  font-size: 14px;
+  cursor: pointer;
+}
+body .car-list-item-view-btn:hover {
+  background-color: #E6356F;
+  color: #ffffff;
+}
+body .show-hide-div {
+  display: none;
+}
+body .show-hide-div.show {
+  display: block;
+  top: 78px;
+  left: 0;
+  right: 0;
+  margin-left: auto;
+  margin-right: auto;
+  border: 1px solid #E6356F;
+  background-color: #ffffff;
+  padding: 16px;
+  width: 250px;
+  height: 250px;
+  position: absolute;
+  border-radius: 5px;
+  font-size: 16px;
 }
 
 .navbar {
-    top: 0px;
-    left: 0px;
-    position: absolute;
-    background-color: #282c34;
-    width: 100%;
-    min-width: 1263px;
-    height: 85px;
-    display: flex;
-    justify-content: center;
+  top: 0px;
+  left: 0px;
+  position: absolute;
+  background-color: #282c34;
+  width: 100%;
+  min-width: 1263px;
+  height: 85px;
+  display: flex;
+  justify-content: center;
+}
+.navbar .title {
+  margin-top: 22px;
+  color: #ffffff;
+}
+.navbar #car-icon {
+  margin-top: 29px;
+  margin-left: 15px;
+  font-size: 32px;
+  color: #ffffff;
 }
 
-.navbar-title {
-    margin-top: 22px;
-    color: white;
-}
-
-.fa-car-side {
-    margin-top: 29px;
-    margin-left: 15px;
-    font-size: 32px;
-    color: white;
-}
-
-.main-content {
-    margin-top: 105px;
-}
-
-.main-content-sort-data {
-    display: flex;
-    justify-content: space-between;
-    margin-right: 12%;
-    margin-left: 12%;
-    height: 56px;
-}
-
-.main-content-toolbar {
-    background-color: white;
-    border-radius: 5px;
-    padding: 4px;
-}
-
-.pickup-table, .return-table {
-    padding: 0px 16px;
-}
-
-.sort-btn-submit {
-    font-size: 20px;
-    margin-top: auto;
-    margin-bottom: auto;
-}
-
-input {
-    font-size: 16px;
-    padding: 6px;
-    cursor: pointer;
-}
-
-.sort-btn {
-    background-color: #E6356F;
-    border: 2px solid #E6356F;
-    color: white;
-    border-radius: 5px;
-}
-
-.sort-btn:hover {
-    background-color: white;
-    color: #E6356F;
-}
-
-.car-list-item-header {
-    font-size: 20px;
-    font-weight: 800;
-    display: flex;
-    justify-content: space-between;
-    width: 100%;
-}
-
-.car-list-container {
-    margin-left: 12%;
-    margin-right: 12%;
-    margin-top: 22px;
-    background: #ffffff;
-    min-width: 900px;
-    border-radius: 5px;
-    padding: 20px;
-    justify-content: center;
-}
-
-.car-list-items {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 20px;
-    overflow-y: unset;
-}
-
-.car-list-item-content {
-    font-size: 16px;
-    padding-left: 5%;
-    padding-right: 5%;
-}
-
-.car-list-item-vendor-icon {
-    width: 70px;
-    margin-top: 5px;
-    margin-left: 12px;
-}
-
-.car-list-item {
-    padding: 22px 16px;
-    font-size: 28px;
-    border: 1px solid #EFEFEF;
-    z-index: 0;
-    position: relative;
-    width: 88%;
-    margin: auto;
-}
-
-.car-list-item-img-container {
-    width: 100%;
-    text-align: center;
-    padding-top: 8px;
-}
-
-.car-list-item-img {
-    width: 240px;
-}
-
-.car-list-item-table {
-    width: 250px;
-    margin: auto;
-    margin-bottom: 6px;
-}
-
-.car-info-prop {
-    padding: 2px 12px;
-    color: #8c8c8c
-}
-
-.car-info-value {
-    padding: 2px 12px;
-    font-weight: 700;
-}
-
-.car-list-item-subtext {
-    color: #999999;
-    font-size: 14px;
-    margin-bottom: 25px;
-    margin-top: -2px;
-}
-
-.car-list-item-view-btn {
-    width: 100%;
-    color: #E6356F;
-    background-color: white;
-    border: 1px solid #E6356F;
-    padding: 6px;
-    font-size: 14px;
-    cursor: pointer;
-}
-
-.car-list-item-view-btn:hover {
-    background-color: #E6356F;
-    color: white;
-}
-
-.car-list-item-details {
-    width: 280px;
-    height: 417px;
-    z-index: 5;
-    border: 1px solid red;
-}
-
-.show-hide-div {
-    display: none;
-}
-
-.show-hide-div.show {
-    display: block;
-    z-index: 999;
-    top: 78px;
-    left: 0; 
-    right: 0; 
-    margin-left: auto; 
-    margin-right: auto; 
-    border: 1px solid #E6356F;
-    background-color: white;
-    padding: 16px;
-    width: 250px;
-    height: 250px;
-    position: absolute;
-    border-radius: 5px;
-    font-size: 16px;
-}
+/*# sourceMappingURL=style.css.map */
