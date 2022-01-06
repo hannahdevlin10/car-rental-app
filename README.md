@@ -1,4 +1,4 @@
-# car-avail-app
+# Car Rental Application
 
 ## Setup
 > Server-less application, therefore requires a plugin or extension for your IDE (i.e. Live Server in VS Code).
